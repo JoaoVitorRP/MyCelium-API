@@ -1,1 +1,4 @@
-//To-do: this file will contain the types
+export type ApplicationError = {
+  name: string;
+  message: string;
+};
