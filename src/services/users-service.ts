@@ -3,14 +3,20 @@ import { SignUp } from "../protocols";
 import { usersRepository } from "../repositories";
 import { hashSync } from "bcrypt";
 
-async function postUser(body: SignUp) {
-  const repeatedUser = await usersRepository.findUserByUser(body.user);
+async function validateUser(email: string, user: string) {
+  const repeatedEmail = await usersRepository.findUserByEmail(email);
+
+  if (repeatedEmail) throw conflictError("Invalid email");
+
+  const repeatedUser = await usersRepository.findUserByUser(user);
 
   if (repeatedUser) throw conflictError("Invalid user");
 
-  const repeatedEmail = await usersRepository.findUserByEmail(body.email);
+  return;
+}
 
-  if (repeatedEmail) throw conflictError("Invalid email");
+async function postUser(body: SignUp) {
+  await validateUser(body.email, body.user);
 
   if (body.picture) {
     const imageResponse = await usersRepository.insertProfilePicture(body.user, body.picture);
@@ -24,5 +30,6 @@ async function postUser(body: SignUp) {
 }
 
 export const usersService = {
+  validateUser,
   postUser,
 };

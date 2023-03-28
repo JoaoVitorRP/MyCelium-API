@@ -11,3 +11,5 @@ export type SignUp = {
   name: string;
   picture?: string;
 };
+
+export type ValidateUser = Omit<SignUp, "password" | "name" | "picture">;
