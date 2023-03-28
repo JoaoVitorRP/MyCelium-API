@@ -1,7 +1,8 @@
-import { conflictError } from "../errors";
-import { SignUp } from "../protocols";
+import { conflictError, unauthorizedError } from "../errors";
+import { SignIn, SignUp } from "../protocols";
 import { usersRepository } from "../repositories";
-import { hashSync } from "bcrypt";
+import { compareSync, hashSync } from "bcrypt";
+import { sign } from "jsonwebtoken";
 
 async function validateUser(email: string, user: string) {
   const repeatedEmail = await usersRepository.findUserByEmail(email);
@@ -29,7 +30,29 @@ async function postUser(body: SignUp) {
   return usersRepository.createUser(body);
 }
 
+async function signIn({ email, password }: SignIn) {
+  const user = await usersRepository.findUserByEmail(email);
+
+  if (!user) throw unauthorizedError();
+
+  const isPasswordValid = compareSync(password, user.password);
+
+  if (!isPasswordValid) throw unauthorizedError();
+
+  const token = sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+
+  return {
+    user: {
+      name: user.name,
+      user: user.user,
+      picture: user.picture,
+    },
+    token,
+  };
+}
+
 export const usersService = {
   validateUser,
   postUser,
+  signIn,
 };
