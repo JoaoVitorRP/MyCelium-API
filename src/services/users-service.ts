@@ -39,7 +39,7 @@ async function signIn({ email, password }: SignIn) {
 
   if (!isPasswordValid) throw unauthorizedError();
 
-  const token = sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+  const token = sign({ userId: user.id }, process.env.JWT_SECRET);
 
   return {
     user: {
