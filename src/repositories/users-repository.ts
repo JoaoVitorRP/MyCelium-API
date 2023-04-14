@@ -1,6 +1,12 @@
 import { imagekit, prisma } from "../config";
 import { SignUp } from "../protocols";
 
+function findUserById(id: number) {
+  return prisma.users.findUnique({
+    where: { id },
+  });
+}
+
 function findUserByUser(user: string) {
   return prisma.users.findUnique({
     where: { user },
@@ -27,6 +33,7 @@ function createUser(body: SignUp) {
 }
 
 export const usersRepository = {
+  findUserById,
   findUserByUser,
   findUserByEmail,
   insertProfilePicture,

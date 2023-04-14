@@ -18,3 +18,12 @@ export type SignIn = {
   email: string;
   password: string;
 };
+
+export type CreatePostData = {
+  user_id: number;
+  description?: string;
+  image: string;
+  species: string;
+};
+
+export type CreatePostBody = Omit<CreatePostData, "user_id">;
