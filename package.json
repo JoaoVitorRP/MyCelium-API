@@ -16,6 +16,9 @@
     "test:migration:run": "npm run test:load-envs npx prisma migrate deploy",
     "test:migration:generate": "npm run test:load-envs npx prisma migrate dev"
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
