@@ -3,6 +3,9 @@ import { CreatePostData } from "../protocols";
 
 function findPosts() {
   return prisma.posts.findMany({
+    orderBy: {
+      created_at: "asc",
+    },
     select: {
       description: true,
       image: true,
@@ -16,6 +19,18 @@ function findPosts() {
         },
       },
     },
+  });
+}
+
+function getTrendings() {
+  return prisma.posts.groupBy({
+    by: ["species"],
+    orderBy: {
+      _count: {
+        species: "desc",
+      },
+    },
+    take: 10,
   });
 }
 
@@ -34,6 +49,7 @@ function createPost(data: CreatePostData) {
 
 export const postsRepository = {
   findPosts,
+  getTrendings,
   uploadPostPicture,
   createPost,
 };

@@ -4,11 +4,11 @@ import { postsService } from "../services";
 import httpStatus from "http-status";
 import { CreatePostBody } from "../protocols";
 
-export async function getPosts(req: AuthenticatedRequest, res: Response) {
+export async function getPostsAndTrendings(req: AuthenticatedRequest, res: Response) {
   try {
-    const posts = await postsService.getPosts();
+    const postsAndTrendings = await postsService.getPostsAndTrendings();
 
-    return res.status(httpStatus.OK).send(posts);
+    return res.status(httpStatus.OK).send(postsAndTrendings);
   } catch (err) {
     return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
   }
