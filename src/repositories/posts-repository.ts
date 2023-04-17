@@ -4,7 +4,7 @@ import { CreatePostData } from "../protocols";
 function findPosts() {
   return prisma.posts.findMany({
     orderBy: {
-      created_at: "asc",
+      created_at: "desc",
     },
     select: {
       description: true,
