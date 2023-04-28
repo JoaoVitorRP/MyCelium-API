@@ -15,8 +15,10 @@ export async function getPosts(req: AuthenticatedRequest, res: Response) {
 }
 
 export async function getTrendings(req: AuthenticatedRequest, res: Response) {
+  const { limit } = req.query;
+
   try {
-    const trendings = await postsService.getTrendings();
+    const trendings = await postsService.getTrendings(Number(limit));
 
     return res.status(httpStatus.OK).send(trendings);
   } catch (err) {

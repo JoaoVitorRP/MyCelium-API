@@ -6,8 +6,8 @@ function getPosts() {
   return postsRepository.findPosts();
 }
 
-function getTrendings() {
-  return postsRepository.getTrendings();
+function getTrendings(limit: number) {
+  return postsRepository.getTrendings(limit);
 }
 
 async function createPost(data: CreatePostData) {

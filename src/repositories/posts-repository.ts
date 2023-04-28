@@ -22,7 +22,7 @@ function findPosts() {
   });
 }
 
-function getTrendings() {
+function getTrendings(limit: number) {
   return prisma.posts.groupBy({
     by: ["species"],
     orderBy: {
@@ -30,7 +30,10 @@ function getTrendings() {
         species: "desc",
       },
     },
-    take: 10,
+    _count: {
+      species: true,
+    },
+    take: limit,
   });
 }
 
