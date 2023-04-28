@@ -14,6 +14,20 @@ export async function getPosts(req: AuthenticatedRequest, res: Response) {
   }
 }
 
+export async function getPostsBySpecies(req: AuthenticatedRequest, res: Response) {
+  const { species } = req.params;
+
+  try {
+    const posts = await postsService.getPostsBySpecies(species);
+
+    return res.status(httpStatus.OK).send(posts);
+  } catch (err) {
+    if (err.name === "NotFoundError") return res.sendStatus(httpStatus.NOT_FOUND);
+
+    return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
+  }
+}
+
 export async function getTrendings(req: AuthenticatedRequest, res: Response) {
   const { limit } = req.query;
 

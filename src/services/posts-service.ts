@@ -1,9 +1,18 @@
 import { forbiddenError } from "../errors/forbidden-error";
+import { notFoundError } from "../errors/not-found-error";
 import { CreatePostData } from "../protocols";
 import { postsRepository, usersRepository } from "../repositories";
 
 function getPosts() {
   return postsRepository.findPosts();
+}
+
+async function getPostsBySpecies(species: string) {
+  const posts = await postsRepository.findPostsBySpecies(species);
+
+  if (posts.length === 0) throw notFoundError();
+
+  return posts;
 }
 
 function getTrendings(limit: number) {
@@ -24,6 +33,7 @@ async function createPost(data: CreatePostData) {
 
 export const postsService = {
   getPosts,
+  getPostsBySpecies,
   getTrendings,
   createPost,
 };

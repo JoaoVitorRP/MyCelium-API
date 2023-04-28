@@ -22,6 +22,28 @@ function findPosts() {
   });
 }
 
+function findPostsBySpecies(species: string) {
+  return prisma.posts.findMany({
+    where: { species },
+    orderBy: {
+      created_at: "desc",
+    },
+    select: {
+      description: true,
+      image: true,
+      species: true,
+      users: {
+        select: {
+          id: true,
+          user: true,
+          name: true,
+          picture: true,
+        },
+      },
+    },
+  });
+}
+
 function getTrendings(limit: number) {
   return prisma.posts.groupBy({
     by: ["species"],
@@ -52,6 +74,7 @@ function createPost(data: CreatePostData) {
 
 export const postsRepository = {
   findPosts,
+  findPostsBySpecies,
   getTrendings,
   uploadPostPicture,
   createPost,
