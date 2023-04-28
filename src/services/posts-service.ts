@@ -2,12 +2,12 @@ import { forbiddenError } from "../errors/forbidden-error";
 import { CreatePostData } from "../protocols";
 import { postsRepository, usersRepository } from "../repositories";
 
-async function getPostsAndTrendings() {
-  const posts = await postsRepository.findPosts();
+function getPosts() {
+  return postsRepository.findPosts();
+}
 
-  const trendings = await postsRepository.getTrendings();
-
-  return { posts, trendings };
+function getTrendings() {
+  return postsRepository.getTrendings();
 }
 
 async function createPost(data: CreatePostData) {
@@ -23,6 +23,7 @@ async function createPost(data: CreatePostData) {
 }
 
 export const postsService = {
-  getPostsAndTrendings,
+  getPosts,
+  getTrendings,
   createPost,
 };
